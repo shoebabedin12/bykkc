@@ -254,7 +254,7 @@ const Navbar = () => {
                     to={"signup"}
                     className="font-medium text-lg text-black hover:text-gray-500"
                   >
-                    Signup
+                    Registration
                   </Link>
                 </div>
               </>

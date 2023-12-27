@@ -239,12 +239,12 @@ const Signup = () => {
             >
               Signup
             </button>
-            <Link
+            {/* <Link
               to={"/"}
               className="text-sm ml-2 hover:text-blue-500 cursor-pointer"
             >
               Forgot Password ?
-            </Link>
+            </Link> */}
           </form>
         </div>
       </div>
