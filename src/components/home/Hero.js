@@ -8,10 +8,14 @@ const Hero = () => {
     <>
       <section
         id="hero"
-        className="hero-section text-center col-span-12 relative"
+        className="hero-section text-center col-span-12 relative min-h-[200px]"
       >
-        <img src={require("./../../assets/images/karate_banner.png")} alt="" />
-        <div className="overlay absolute top-1 left-0 w-full h-full flex items-center justify-center flex-col ">
+        <img
+          className="w-full h-full"
+          src={require("./../../assets/images/karate_banner.png")}
+          alt=""
+        />
+        <div className="overlay absolute top-0 left-0 w-full h-full flex items-center justify-center flex-col">
           <h1 className="lg:text-2xl md:text-lg font-bold text-white px-10">
             Welcome to Bangladesh Young King Karate Center
           </h1>
