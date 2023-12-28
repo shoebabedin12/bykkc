@@ -2,14 +2,14 @@ import axios from "axios";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { MdOutlinePayment } from "react-icons/md";
-import { RiUploadCloud2Fill } from "react-icons/ri";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { signup } from "../../validation";
 
 const Signup = () => {
   const navigate = useNavigate();
   const [preview, setPreview] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const apiKey = process.env.REACT_APP_API_KEY;
 
@@ -32,9 +32,9 @@ const Signup = () => {
       console.log(data);
       toast(data.error);
       if (data.success) {
-          toast(data.message)
-          navigate("/verify");
-          localStorage.setItem("User Email", JSON.stringify(data.email));
+        toast(data.message);
+        navigate("/verify");
+        localStorage.setItem("User Email", JSON.stringify(data.email));
       }
     } catch (error) {
       console.log(error.message);
@@ -182,7 +182,7 @@ const Signup = () => {
                 {formik.errors.role}
               </p>
             ) : null} */}
-            <div className="flex items-center border-2 py-2 px-3 rounded-2xl mt-4">
+            {/* <div className="flex items-center border-2 py-2 px-3 rounded-2xl mt-4">
               <RiUploadCloud2Fill className="h-5 w-5 text-gray-400" />
               <input
                 className="pl-2 outline-none border-none "
@@ -205,17 +205,69 @@ const Signup = () => {
                 }}
               />
             </div>
-            {preview && <div className="flex items-center border-2 py-2 px-3 rounded-2xl mt-4">
-              <img
-                src={preview}
-                alt=""
-                className="max-w-[150px] object-cover"
-              />
-            </div>}
+            {preview && (
+              <div className="flex items-center border-2 py-2 px-3 rounded-2xl mt-4">
+                <img
+                  src={preview}
+                  alt=""
+                  className="max-w-[150px] object-cover"
+                />
+              </div>
+            )} */}
+
+            <div className="flex items-center space-x-6 border-2 py-2 px-3 rounded-2xl mt-4">
+              <div className="shrink-0">
+                {preview ? (
+                  <img
+                    className="h-16 w-16 object-cover rounded-full"
+                    src={preview}
+                    alt="Current profile photo"
+                  />
+                ) : (
+                  <img
+                    className="h-16 w-16 object-cover rounded-full bg-white"
+                    src={require("./../../assets/images/file-upload-image.jpg")}
+                    alt="Current profile photo"
+                  />
+                )}
+              </div>
+              <label className="block">
+                <span className="sr-only">Choose profile photo</span>
+                <input
+                  type="file"
+                  placeholder="User"
+                  name="image"
+                  accept="image/*"
+                  className="block w-full text-sm text-slate-500
+      file:mr-4 file:py-2 file:px-4
+      file:rounded-full file:border-0
+      file:text-sm file:font-semibold
+      file:bg-violet-50 file:text-violet-700
+      hover:file:bg-violet-100
+    "
+                  onChange={(e) => {
+                    let file = e.target.files[0];
+                    let reader = new FileReader();
+                    reader.onloadend = () => {
+                      if (reader.readyState === 2) {
+                        formik.setFieldValue("image", reader.result);
+                        setPreview(reader.result);
+                      }
+                    };
+                    reader.readAsDataURL(file);
+                  }}
+                />
+              </label>
+            </div>
+            {formik.touched.image && formik.errors.image ? (
+              <p className="text-sm font-normal text-gray-600">
+                {formik.errors.image}
+              </p>
+            ) : null}
 
             <div className="flex items-center  flex-col border-2 py-2 px-3 rounded-2xl mt-4">
-            <div className="flex items-center w-full">
-              <MdOutlinePayment />
+              <div className="flex items-center w-full">
+                <MdOutlinePayment />
                 <input
                   className="pl-2 outline-none border-none w-full"
                   type="text"
@@ -224,8 +276,8 @@ const Signup = () => {
                   value={formik.values.paymentID}
                   onChange={formik.handleChange}
                 />
-            </div>
-              <p>Note: Bkash Payment Number is XXXXXXXXXX</p>
+              </div>
+              <p>Note: Bkash Payment Number is 01686586914</p>
             </div>
             {formik.touched.paymentID && formik.errors.paymentID ? (
               <p className="text-sm font-normal text-gray-600">
@@ -233,12 +285,23 @@ const Signup = () => {
               </p>
             ) : null}
 
-            <button
-              type="submit"
-              className="block w-full bg-indigo-600 py-2 rounded-2xl text-white font-semibold mt-2"
-            >
-              Signup
-            </button>
+            {loading ? (
+              <button type="button" className="flex items-center justify-center w-full bg-indigo-600 py-2 rounded-2xl text-white font-semibold mt-2" disabled>
+                <svg
+                  className="motion-reduce:hidden animate-spin ..."
+                  viewBox="0 0 24 24"
+                ></svg>
+                Processing...
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="block w-full bg-indigo-600 py-2 rounded-2xl text-white font-semibold mt-2"
+                onClick={() => setLoading(true)}
+              >
+                Signup
+              </button>
+            )}
             {/* <Link
               to={"/"}
               className="text-sm ml-2 hover:text-blue-500 cursor-pointer"
